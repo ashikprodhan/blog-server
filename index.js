@@ -85,9 +85,10 @@ client.connect(err => {
 
 // isAdmin 
 app.post('/isAdmin',(req,res)=>{
-    // console.log(req.body.email);
-    adminCollection.find({email:req.body.email})
+    //  console.log('admin send korlam',req.body.email);
+    adminCollection.find({admin:req.body.email})
     .toArray((err, admins) => {
+        console.log('asol admin',admins);
         res.send(admins.length > 0);
     })
 })
