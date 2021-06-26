@@ -52,16 +52,52 @@ client.connect(err => {
     })
 
 
+   // all blog posts
+   app.get('/allBlog', (req, res) => {
+    blogCollection.find()
+     .toArray((err,blogs) =>{
+         res.send(blogs)
+         console.log("blog froom database");
+     })
+})
+// find specific blog collection
+ app.get('/allBlog/:id',(req,res)=>{
+    const id = ObjectID(req.params.id)
+    console.log(id);
+     blogCollection.findOne({_id:id})
+      .then((result)=>{
+        res.send(result)
+          console.log(" getting please wait ",result,"error:",err);
+         
+      })
 
+ })
+ app.delete('/delete/:id',(req,res)=>{
+    const id=ObjectID(req.params.id)
+    console.log(id);
+    
+    blogCollection.findOneAndDelete({_id:id})
+    .then(documents => {
+        console.log('documents deleted',documents);
+        res.send(!! documents.value);
+    })
+})
+
+// isAdmin 
+app.post('/isAdmin',(req,res)=>{
+    // console.log(req.body.email);
+    adminCollection.find({email:req.body.email})
+    .toArray((err, admins) => {
+        res.send(admins.length > 0);
+    })
+})
 
 
     //   client.close();
 });
 
 
-// app.get('/', (req, res) => {
-//     res.send('Hello World!')
-// })
+
 
 
 app.listen(port)
